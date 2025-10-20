@@ -1,0 +1,68 @@
+# -------------------------
+#  Virtual Environments
+# -------------------------
+# ละเว้นโฟลเดอร์ virtual environment ทั้งหมด
+.venv/
+venv/
+ENV/
+env/
+
+
+# -------------------------
+#  Python Artifacts
+# -------------------------
+# ละเว้นโฟลเดอร์ __pycache__ และไฟล์ bytecode ที่ Python สร้างขึ้นอัตโนมัติ
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# -------------------------
+#  Distribution / Packaging
+# -------------------------
+# ละเว้นไฟล์และโฟลเดอร์ที่เกิดจากการ build หรือ packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+
+# -------------------------
+#  Environment Variables
+# -------------------------
+# ห้าม commit ไฟล์ .env ที่เก็บข้อมูลสำคัญ เช่น API Keys หรือรหัสผ่านเด็ดขาด
+# แต่สามารถ commit ไฟล์ .env.example เพื่อเป็นตัวอย่างได้
+.env
+.env.*
+!.env.example
+
+
+# -------------------------
+#  IDE / Editor Settings
+# -------------------------
+# ละเว้นไฟล์ตั้งค่าของ IDE/Editor ที่แตกต่างกันไปในแต่ละเครื่อง
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# -------------------------
+#  Testing
+# -------------------------
+# ละเว้นไฟล์ที่เกิดจากการรันเทสหรือ coverage
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+
+
+# -------------------------
+#  OS-specific files
+# -------------------------
+# ละเว้นไฟล์ของระบบปฏิบัติการ
+.DS_Store
+Thumbs.db
