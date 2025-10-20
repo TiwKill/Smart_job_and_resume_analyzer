@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Upload, FileSearch, Briefcase, TrendingUp, Loader2, AlertCircle } from "lucide-react"
+import { Upload, FileSearch, Briefcase, TrendingUp, Loader2, AlertCircle, Users, Database, Sparkles, BarChart3, Rocket, Shield, Zap } from "lucide-react"
 import Link from "next/link"
 import { useListResumes } from "@/hooks/use-list-resumes"
 import { toast } from "sonner"
+import { Badge } from "@/components/ui/badge"
 
 interface ResumeFile {
     filename: string
@@ -33,6 +34,21 @@ const getTotalSize = (resumes: ResumeFile[]): number => {
     return resumes.reduce((total, resume) => total + resume.size, 0)
 }
 
+// Function to get file icon based on extension
+const getFileIcon = (extension: string) => {
+    switch (extension.toLowerCase()) {
+        case '.pdf':
+            return '📄'
+        case '.doc':
+        case '.docx':
+            return '📝'
+        case '.txt':
+            return '📋'
+        default:
+            return '📎'
+    }
+}
+
 export default function DashboardPage() {
     const { data, isLoading, error, refetch } = useListResumes()
     const [resumesList, setResumesList] = useState<ResumeFile[]>([])
@@ -50,8 +66,8 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (error) {
-            toast.error("Failed to load resume data", {
-                description: typeof error === 'string' ? error : "An error occurred",
+            toast.error("ไม่สามารถโหลดข้อมูลเรซูเม่ได้", {
+                description: typeof error === 'string' ? error : "เกิดข้อผิดพลาด",
             })
         }
     }, [error])
@@ -60,237 +76,344 @@ export default function DashboardPage() {
     const recentFiles = resumesList.slice(0, 5)
 
     return (
-        <div className="min-h-screen p-8">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
             <div className="mx-auto max-w-7xl space-y-8">
                 {/* Header */}
-                <div className="space-y-2">
-                    <h1 className="text-4xl font-bold tracking-tight text-foreground">
-                        Resume Analysis Dashboard
+                <div className="text-center space-y-4">
+                    <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border">
+                        <Sparkles className="h-5 w-5 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-600">AI-Powered Recruitment Platform</span>
+                    </div>
+                    <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        ระบบวิเคราะห์เรซูเม่
                     </h1>
-                    <p className="text-lg text-muted-foreground">
-                        AI-powered recruitment tool for analyzing resumes and matching candidates with job positions
+                    <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                        เครื่องมือสรรหาบุคลากรอัจฉริยะสำหรับการวิเคราะห์เรซูเม่และจับคู่ผู้สมัครกับตำแหน่งงาน
                     </p>
                 </div>
 
-                {/* Stats */}
-                <div className="grid gap-6 md:grid-cols-3">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Total Resumes</CardTitle>
-                            <FileSearch className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            {isLoading ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                                    <span>Loading...</span>
+                {/* Stats Cards */}
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    {/* Total Resumes */}
+                    <Card className="bg-gradient-to-br from-blue-500 to-cyan-600 text-white shadow-xl border-0">
+                        <CardContent className="p-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm opacity-90">เรซูเม่ทั้งหมด</p>
+                                    {isLoading ? (
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                            <span className="text-lg">กำลังโหลด...</span>
+                                        </div>
+                                    ) : error ? (
+                                        <div className="flex items-center gap-2 mt-1 text-red-200">
+                                            <AlertCircle className="h-4 w-4" />
+                                            <span className="text-lg">ข้อผิดพลาด</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-3xl font-bold">{totalResumes}</div>
+                                    )}
                                 </div>
-                            ) : error ? (
-                                <div className="flex items-center gap-2 text-destructive">
-                                    <AlertCircle className="h-4 w-4" />
-                                    <span>Error</span>
+                                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <Database className="h-6 w-6" />
                                 </div>
-                            ) : (
-                                <>
-                                    <div className="text-2xl font-bold">
-                                        {totalResumes}
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">
-                                        Resumes in database
-                                    </p>
-                                </>
-                            )}
+                            </div>
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
-                            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            {isLoading ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                                    <span>Loading...</span>
+                    {/* Storage Used */}
+                    <Card className="bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-xl border-0">
+                        <CardContent className="p-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm opacity-90">พื้นที่จัดเก็บ</p>
+                                    {isLoading ? (
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                            <span className="text-lg">กำลังโหลด...</span>
+                                        </div>
+                                    ) : error ? (
+                                        <div className="flex items-center gap-2 mt-1 text-red-200">
+                                            <AlertCircle className="h-4 w-4" />
+                                            <span className="text-lg">ข้อผิดพลาด</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-3xl font-bold">{totalSize}</div>
+                                    )}
                                 </div>
-                            ) : error ? (
-                                <div className="flex items-center gap-2 text-destructive">
-                                    <AlertCircle className="h-4 w-4" />
-                                    <span>Error</span>
+                                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <TrendingUp className="h-6 w-6" />
                                 </div>
-                            ) : (
-                                <>
-                                    <div className="text-2xl font-bold">
-                                        {totalSize}
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">
-                                        Total files size
-                                    </p>
-                                </>
-                            )}
+                            </div>
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">Recent Files</CardTitle>
-                            <Briefcase className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            {isLoading ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                                    <span>Loading...</span>
+                    {/* Recent Files */}
+                    <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-xl border-0">
+                        <CardContent className="p-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm opacity-90">ไฟล์ล่าสุด</p>
+                                    {isLoading ? (
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                            <span className="text-lg">กำลังโหลด...</span>
+                                        </div>
+                                    ) : error ? (
+                                        <div className="flex items-center gap-2 mt-1 text-red-200">
+                                            <AlertCircle className="h-4 w-4" />
+                                            <span className="text-lg">ข้อผิดพลาด</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-3xl font-bold">{recentFiles.length}</div>
+                                    )}
                                 </div>
-                            ) : error ? (
-                                <div className="flex items-center gap-2 text-destructive">
-                                    <AlertCircle className="h-4 w-4" />
-                                    <span>Error</span>
+                                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <FileSearch className="h-6 w-6" />
                                 </div>
-                            ) : (
-                                <>
-                                    <div className="text-2xl font-bold">
-                                        {recentFiles.length}
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">
-                                        Last 5 uploads
-                                    </p>
-                                </>
-                            )}
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Active Analysis */}
+                    <Card className="bg-gradient-to-br from-orange-500 to-red-600 text-white shadow-xl border-0">
+                        <CardContent className="p-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm opacity-90">การวิเคราะห์</p>
+                                    <div className="text-3xl font-bold">พร้อมใช้งาน</div>
+                                </div>
+                                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                    <BarChart3 className="h-6 w-6" />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
 
-                {/* Recent Files Preview */}
-                {recentFiles.length > 0 && (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Recent Uploads</CardTitle>
-                            <CardDescription>
-                                Recently uploaded resume files
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {recentFiles.map((file, index) => (
-                                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                                        <div className="flex items-center gap-3">
-                                            <FileSearch className="h-5 w-5 text-primary" />
-                                            <div>
-                                                <p className="font-medium text-sm">{file.filename}</p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {formatFileSize(file.size)} • {file.extension}
+                {/* Main Content Grid */}
+                <div className="grid lg:grid-cols-3 gap-8">
+                    {/* Left Column - Quick Actions */}
+                    <div className="lg:col-span-2 space-y-8">
+                        {/* Quick Actions */}
+                        <Card className="border-2 border-blue-200 shadow-lg">
+                            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                                <CardTitle className="flex items-center gap-3 text-blue-900">
+                                    <Rocket className="h-6 w-6" />
+                                    การดำเนินการด่วน
+                                </CardTitle>
+                                <CardDescription className="text-blue-700">
+                                    เริ่มต้นใช้งานระบบด้วยการดำเนินการเหล่านี้
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="p-6">
+                                <div className="grid gap-6 md:grid-cols-2">
+                                    <Link href="/upload">
+                                        <Card className="hover:border-blue-300 hover:shadow-md transition-all duration-300 cursor-pointer border-2 border-blue-100 bg-white/80 backdrop-blur-sm">
+                                            <CardContent className="p-6 text-center">
+                                                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                    <Upload className="h-8 w-8 text-blue-600" />
+                                                </div>
+                                                <h3 className="font-semibold text-gray-900 mb-2">อัปโหลดเรซูเม่</h3>
+                                                <p className="text-sm text-gray-600 mb-4">
+                                                    อัปโหลดไฟล์เรซูเม่เดี่ยวหรือหลายไฟล์เพื่อวิเคราะห์
                                                 </p>
+                                                <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                                                    เริ่มอัปโหลด
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+
+                                    <Link href="/match">
+                                        <Card className="hover:border-green-300 hover:shadow-md transition-all duration-300 cursor-pointer border-2 border-green-100 bg-white/80 backdrop-blur-sm">
+                                            <CardContent className="p-6 text-center">
+                                                <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                    <Users className="h-8 w-8 text-green-600" />
+                                                </div>
+                                                <h3 className="font-semibold text-gray-900 mb-2">จับคู่ตำแหน่งงาน</h3>
+                                                <p className="text-sm text-gray-600 mb-4">
+                                                    ค้นหาผู้สมัครที่เหมาะสมกับตำแหน่งงานของคุณ
+                                                </p>
+                                                <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                                                    เริ่มจับคู่
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+
+                                    <Link href="/analyze">
+                                        <Card className="hover:border-purple-300 hover:shadow-md transition-all duration-300 cursor-pointer border-2 border-purple-100 bg-white/80 backdrop-blur-sm">
+                                            <CardContent className="p-6 text-center">
+                                                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                    <FileSearch className="h-8 w-8 text-purple-600" />
+                                                </div>
+                                                <h3 className="font-semibold text-gray-900 mb-2">วิเคราะห์เรซูเม่</h3>
+                                                <p className="text-sm text-gray-600 mb-4">
+                                                    แยกและวิเคราะห์ข้อมูลจากไฟล์เรซูเม่
+                                                </p>
+                                                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                                                    เริ่มวิเคราะห์
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+
+                                    <Link href="/library">
+                                        <Card className="hover:border-orange-300 hover:shadow-md transition-all duration-300 cursor-pointer border-2 border-orange-100 bg-white/80 backdrop-blur-sm">
+                                            <CardContent className="p-6 text-center">
+                                                <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                    <Briefcase className="h-8 w-8 text-orange-600" />
+                                                </div>
+                                                <h3 className="font-semibold text-gray-900 mb-2">คลังเรซูเม่</h3>
+                                                <p className="text-sm text-gray-600 mb-4">
+                                                    ดูเรซูเม่ทั้งหมดในคลังของคุณ
+                                                </p>
+                                                <Button className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700">
+                                                    ดูคลัง
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Recent Files Preview */}
+                        {recentFiles.length > 0 && (
+                            <Card className="border-2 border-green-200 shadow-lg">
+                                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
+                                    <CardTitle className="flex items-center gap-3 text-green-900">
+                                        <FileSearch className="h-6 w-6" />
+                                        ไฟล์ที่อัปโหลดล่าสุด
+                                    </CardTitle>
+                                    <CardDescription className="text-green-700">
+                                        เรซูเม่ 5 ไฟล์ล่าสุดที่อัปโหลดเข้ามา
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="p-6">
+                                    <div className="space-y-4">
+                                        {recentFiles.map((file, index) => (
+                                            <div key={index} className="flex items-center justify-between p-4 bg-white/80 rounded-xl border border-green-100 hover:border-green-300 transition-colors">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
+                                                        <span className="text-xl">{getFileIcon(file.extension)}</span>
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-medium text-gray-900 text-sm">{file.filename}</p>
+                                                        <div className="flex items-center gap-3 text-xs text-gray-600 mt-1">
+                                                            <span>{formatFileSize(file.size)}</span>
+                                                            <span>•</span>
+                                                            <Badge variant="outline" className="bg-green-50 text-green-700">
+                                                                {file.extension.toUpperCase()}
+                                                            </Badge>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <Button size="sm" variant="outline">
-                                            View
-                                        </Button>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                )}
+                                    <div className="mt-6 pt-4 border-t border-green-200">
+                                        <Link href="/library">
+                                            <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-50">
+                                                ดูเรซูเม่ทั้งหมด
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </div>
 
-                {/* Quick Actions */}
-                <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-foreground">Quick Actions</h2>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        <Card className="hover:border-primary transition-colors">
-                            <CardHeader>
-                                <Upload className="h-8 w-8 text-primary mb-2" />
-                                <CardTitle>Upload Resume</CardTitle>
-                                <CardDescription>
-                                    Upload single or multiple resume files for analysis
+                    {/* Right Column - Features */}
+                    <div className="space-y-8">
+                        {/* Features Section */}
+                        <Card className="border-2 border-purple-200 shadow-lg">
+                            <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b">
+                                <CardTitle className="flex items-center gap-3 text-purple-900">
+                                    <Zap className="h-6 w-6" />
+                                    คุณสมบัติหลัก
+                                </CardTitle>
+                                <CardDescription className="text-purple-700">
+                                    สิ่งที่ทำให้ระบบวิเคราะห์เรซูเม่ของเรามีประสิทธิภาพ
                                 </CardDescription>
                             </CardHeader>
-                            <CardContent>
-                                <Link href="/upload">
-                                    <Button className="w-full">Upload Now</Button>
-                                </Link>
+                            <CardContent className="p-6 space-y-6">
+                                <div className="flex gap-4 p-3 bg-white/80 rounded-xl border border-purple-100">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center shrink-0">
+                                        <Database className="h-6 w-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900 mb-1">การจัดการเรซูเม่</h3>
+                                        <p className="text-sm text-gray-600">
+                                            อัปโหลดและจัดระเบียบไฟล์เรซูเม่ทั้งหมดในคลังเดียว
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 p-3 bg-white/80 rounded-xl border border-green-100">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center shrink-0">
+                                        <FileSearch className="h-6 w-6 text-green-600" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900 mb-1">การวิเคราะห์ไฟล์</h3>
+                                        <p className="text-sm text-gray-600">
+                                            วิเคราะห์ไฟล์เรซูเม่เพื่อแยกข้อมูลสำคัญและเมตาดาต้า
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 p-3 bg-white/80 rounded-xl border border-orange-100">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-red-100 rounded-xl flex items-center justify-center shrink-0">
+                                        <TrendingUp className="h-6 w-6 text-orange-600" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900 mb-1">ข้อมูลพื้นที่จัดเก็บ</h3>
+                                        <p className="text-sm text-gray-600">
+                                            ติดตามการใช้พื้นที่จัดเก็บและจัดการคลังเรซูเม่อย่างมีประสิทธิภาพ
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 p-3 bg-white/80 rounded-xl border border-indigo-100">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center shrink-0">
+                                        <Shield className="h-6 w-6 text-indigo-600" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900 mb-1">ความปลอดภัย</h3>
+                                        <p className="text-sm text-gray-600">
+                                            ข้อมูลของคุณได้รับการปกป้องด้วยมาตรฐานความปลอดภัยระดับสูง
+                                        </p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="hover:border-primary transition-colors">
-                            <CardHeader>
-                                <FileSearch className="h-8 w-8 text-primary mb-2" />
-                                <CardTitle>View Library</CardTitle>
-                                <CardDescription>
-                                    Browse all resumes in your library
-                                </CardDescription>
+                        {/* System Status */}
+                        <Card className="border-2 border-blue-200 shadow-lg">
+                            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                                <CardTitle className="flex items-center gap-3 text-blue-900">
+                                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                    สถานะระบบ
+                                </CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <Link href="/library">
-                                    <Button className="w-full" variant="outline">
-                                        View Library
-                                    </Button>
-                                </Link>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="hover:border-primary transition-colors">
-                            <CardHeader>
-                                <Briefcase className="h-8 w-8 text-primary mb-2" />
-                                <CardTitle>Analyze Resume</CardTitle>
-                                <CardDescription>
-                                    Extract and analyze candidate information from resumes
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Link href="/analyze">
-                                    <Button className="w-full" variant="outline">
-                                        Start Analysis
-                                    </Button>
-                                </Link>
+                            <CardContent className="p-6 space-y-4">
+                                <div className="flex justify-between items-center p-3 bg-white/80 rounded-lg border">
+                                    <span className="text-sm text-gray-700">เซิร์ฟเวอร์</span>
+                                    <Badge className="bg-green-100 text-green-800 border-green-300">ออนไลน์</Badge>
+                                </div>
+                                <div className="flex justify-between items-center p-3 bg-white/80 rounded-lg border">
+                                    <span className="text-sm text-gray-700">ฐานข้อมูล</span>
+                                    <Badge className="bg-green-100 text-green-800 border-green-300">เชื่อมต่อแล้ว</Badge>
+                                </div>
+                                <div className="flex justify-between items-center p-3 bg-white/80 rounded-lg border">
+                                    <span className="text-sm text-gray-700">AI Engine</span>
+                                    <Badge className="bg-green-100 text-green-800 border-green-300">พร้อมใช้งาน</Badge>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
-
-                {/* Features Section */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Key Features</CardTitle>
-                        <CardDescription>What makes our resume analyzer powerful</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="flex gap-4">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                                <FileSearch className="h-5 w-5 text-primary" />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold">Resume Management</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    Upload and organize all your resume files in one centralized library
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                                <Briefcase className="h-5 w-5 text-primary" />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold">File Analysis</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    Analyze resume files to extract important information and metadata
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                                <TrendingUp className="h-5 w-5 text-primary" />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold">Storage Insights</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    Track your storage usage and manage your resume library efficiently
-                                </p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
             </div>
         </div>
     )
