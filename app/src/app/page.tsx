@@ -10,33 +10,27 @@ import { toast } from "sonner"
 
 interface ResumeFile {
     filename: string
-    file_path: string
-    size: string
-    size_bytes: number
-    contact_info?: {
-        name?: string
-        email?: string
-        phone?: string
-    }
-    personal_info?: {
-        age?: number
-        gender?: string
-    }
-    education?: Array<{
-        degree: string
-        field: string
-        gpa?: number
-    }>
-    total_experience?: string
-    skills_summary?: string[]
-    error?: string
+    size: number
+    extension: string
 }
 
 interface ListResumesResponse {
     resumes: ResumeFile[]
-    total_resumes: number
-    total_size: number
-    total_size_formatted: string
+    total: number
+}
+
+// Function to format file size
+const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+// Function to get total size of all resumes
+const getTotalSize = (resumes: ResumeFile[]): number => {
+    return resumes.reduce((total, resume) => total + resume.size, 0)
 }
 
 export default function DashboardPage() {
@@ -49,8 +43,8 @@ export default function DashboardPage() {
         if (data) {
             const responseData = data as ListResumesResponse
             setResumesList(responseData.resumes || [])
-            setTotalResumes(responseData.total_resumes || 0)
-            setTotalSize(responseData.total_size_formatted || "0 KB")
+            setTotalResumes(responseData.total || 0)
+            setTotalSize(formatFileSize(getTotalSize(responseData.resumes || [])))
         }
     }, [data])
 
@@ -61,6 +55,9 @@ export default function DashboardPage() {
             })
         }
     }, [error])
+
+    // Get recent files (last 5 uploaded)
+    const recentFiles = resumesList.slice(0, 5)
 
     return (
         <div className="min-h-screen p-8">
@@ -154,7 +151,7 @@ export default function DashboardPage() {
                             ) : (
                                 <>
                                     <div className="text-2xl font-bold">
-                                        {resumesList.slice(0, 5).length}
+                                        {recentFiles.length}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
                                         Last 5 uploads
@@ -164,6 +161,38 @@ export default function DashboardPage() {
                         </CardContent>
                     </Card>
                 </div>
+
+                {/* Recent Files Preview */}
+                {recentFiles.length > 0 && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Recent Uploads</CardTitle>
+                            <CardDescription>
+                                Recently uploaded resume files
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3">
+                                {recentFiles.map((file, index) => (
+                                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                                        <div className="flex items-center gap-3">
+                                            <FileSearch className="h-5 w-5 text-primary" />
+                                            <div>
+                                                <p className="font-medium text-sm">{file.filename}</p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {formatFileSize(file.size)} • {file.extension}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <Button size="sm" variant="outline">
+                                            View
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
 
                 {/* Quick Actions */}
                 <div className="space-y-4">
@@ -187,6 +216,23 @@ export default function DashboardPage() {
                         <Card className="hover:border-primary transition-colors">
                             <CardHeader>
                                 <FileSearch className="h-8 w-8 text-primary mb-2" />
+                                <CardTitle>View Library</CardTitle>
+                                <CardDescription>
+                                    Browse all resumes in your library
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Link href="/library">
+                                    <Button className="w-full" variant="outline">
+                                        View Library
+                                    </Button>
+                                </Link>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="hover:border-primary transition-colors">
+                            <CardHeader>
+                                <Briefcase className="h-8 w-8 text-primary mb-2" />
                                 <CardTitle>Analyze Resume</CardTitle>
                                 <CardDescription>
                                     Extract and analyze candidate information from resumes
@@ -196,23 +242,6 @@ export default function DashboardPage() {
                                 <Link href="/analyze">
                                     <Button className="w-full" variant="outline">
                                         Start Analysis
-                                    </Button>
-                                </Link>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="hover:border-primary transition-colors">
-                            <CardHeader>
-                                <Briefcase className="h-8 w-8 text-primary mb-2" />
-                                <CardTitle>Match Job</CardTitle>
-                                <CardDescription>
-                                    Find the best candidates for your job positions
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Link href="/match">
-                                    <Button className="w-full" variant="outline">
-                                        Match Candidates
                                     </Button>
                                 </Link>
                             </CardContent>
@@ -232,9 +261,9 @@ export default function DashboardPage() {
                                 <FileSearch className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-semibold">AI-Powered Analysis</h3>
+                                <h3 className="font-semibold">Resume Management</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Extract skills, experience, education, certifications, and more from resumes automatically
+                                    Upload and organize all your resume files in one centralized library
                                 </p>
                             </div>
                         </div>
@@ -243,9 +272,9 @@ export default function DashboardPage() {
                                 <Briefcase className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-semibold">Smart Job Matching</h3>
+                                <h3 className="font-semibold">File Analysis</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Match candidates with job positions based on skills, experience, and requirements
+                                    Analyze resume files to extract important information and metadata
                                 </p>
                             </div>
                         </div>
@@ -254,9 +283,9 @@ export default function DashboardPage() {
                                 <TrendingUp className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-semibold">Detailed Insights</h3>
+                                <h3 className="font-semibold">Storage Insights</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Get comprehensive candidate profiles including language skills, certifications, and driving licenses
+                                    Track your storage usage and manage your resume library efficiently
                                 </p>
                             </div>
                         </div>
