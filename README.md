@@ -388,7 +388,7 @@ MIT License
 
 ## 👥 ผู้พัฒนา
 
-Smart Job & Resume Analyzer Team
+TiwKill
 
 ## 📞 ติดต่อ
 
