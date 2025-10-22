@@ -1,533 +1,399 @@
-# Smart Job & Resume Analyzer API
+# Smart Job & Resume Analyzer
 
-โปรแกรมวิเคราะห์ Resume และ Job Description ด้วย NLP รองรับภาษาไทยและอังกฤษ พร้อมสรุปสำหรับ HR เพิ่มการตรวจจับตำแหน่งงาน เงินเดือน สถานที่ ประเภทงาน และวันเริ่มงาน
+ระบบวิเคราะห์ Resume และจับคู่งานอัจฉริยะด้วย NLP รองรับภาษาไทยและอังกฤษ พร้อม OCR สำหรับการอ่าน PDF ที่เป็นรูปภาพ
 
-## ✨ Features
+## ✨ คุณสมบัติหลัก
 
-### 🎯 การวิเคราะห์ Resume
-- **OCR Support**: อ่านไฟล์ PDF แบบรูปภาพด้วย Tesseract OCR
-- **รองรับหลายไฟล์**: PDF, DOCX, TXT
-- **ข้อมูลที่ดึงได้**:
-  - ข้อมูลส่วนตัว (อายุ, เพศ, สถานภาพ)
+### 📄 Resume Analysis
+- **รองรับหลายรูปแบบไฟล์**: PDF, DOCX, DOC, TXT
+- **OCR สำหรับ PDF**: อ่านได้ทั้ง PDF ที่เป็นข้อความและรูปภาพ (รองรับภาษาไทย+อังกฤษ)
+- **การวิเคราะห์ครบวงจร**:
   - ข้อมูลติดต่อ (อีเมล, เบอร์โทร, ที่อยู่)
-  - การศึกษา (วุฒิการศึกษา, สาขา, GPA, เกียรตินิยม)
+  - ข้อมูลส่วนตัว (อายุ, เพศ, สถานภาพ)
+  - การศึกษา (ระดับ, สาขา, GPA, เกียรตินิยม)
   - ประสบการณ์ทำงาน (ตำแหน่ง, ระยะเวลา, เงินเดือน)
-  - ทักษะ (Programming, Web, Database, Cloud, Business, UX/UI Design)
-  - ภาษา (ไทย, อังกฤษ พร้อมคะแนนสอบ TOEIC, IELTS, TOEFL, CU-TEP)
-  - ประกาศนียบัตร
-  - ความสามารถพิเศษ
-  - ลิงก์ต่างๆ (GitHub, LinkedIn, Portfolio)
+  - ทักษะ (Programming, Web, Design, Database, Cloud/DevOps, Data Science, Business, Management)
+  - เงินเดือนที่ต้องการ
+  - ประกาศนียบัตร/การฝึกอบรม
+  - ความสามารถทางภาษา (พูด, อ่าน, เขียน + คะแนนสอบ TOEIC, IELTS, TOEFL, CU-TEP)
+  - ความสามารถในการขับขี่และรถที่มี
+  - ตำแหน่งที่ต้องการสมัคร
+  - สถานที่ทำงานที่ต้องการ
+  - ประเภทงานที่ต้องการ
+  - วันที่สามารถเริ่มงานได้
+  - ลิงก์ต่างๆ (GitHub, LinkedIn, Portfolio, ฯลฯ)
 
-### 🎯 ข้อมูลเพิ่มเติมที่ดึงได้
-- **ตำแหน่งที่ต้องการ**: ระบุตำแหน่งงานที่ผู้สมัครต้องการ
-- **เงินเดือนที่ต้องการ**: ช่วงเงินเดือนที่คาดหวัง
-- **สถานที่ทำงาน**: จังหวัดหรือพื้นที่ที่ต้องการทำงาน
-- **ประเภทงาน**: งานประจำ, Part-time, Contract, Freelance, Internship, Remote
-- **วันที่เริ่มงาน**: วันที่สามารถเริ่มงานได้
+### 🎯 Job Matching (Enhanced NLP-based)
+- **Scraping จาก JobThai**: ดึงข้อมูล Resume จาก JobThai.com อัตโนมัติ
+- **การจับคู่แบบ Multi-factor Analysis**:
+  - **Skills Matching (40%)**: ใช้ TF-IDF + Cosine Similarity วิเคราะห์ความคล้ายคลึงของทักษะ
+  - **Position Similarity (25%)**: วิเคราะห์ความตรงกันของตำแหน่งงาน
+  - **Salary Matching (20%)**: เปรียบเทียบเงินเดือนที่ต้องการกับที่เสนอ
+  - **Education Relevance (15%)**: ประเมินความเหมาะสมของการศึกษา
+  - **Location Matching (10%)**: ตรวจสอบสถานที่ทำงาน
+  - **Experience Matching (10%)**: วิเคราะห์ประสบการณ์
+- **Recommendation System**: แนะนำการตัดสินใจรับสมัครแบบอัตโนมัติ
+- **Top 20 Matches**: แสดงผู้สมัครที่เหมาะสมที่สุด 20 อันดับแรก
 
-### 📊 การจับคู่งาน (Job Matching)
-- **Vector Similarity**: ใช้ TF-IDF + Cosine Similarity
-- **Skill Matching**: เปรียบเทียบทักษะที่ตรงกัน
-- **Language Score**: คะแนนทักษะทางภาษา (30%)
-- **Experience Score**: คะแนนประสบการณ์
-- **Education Score**: คะแนนการศึกษา
-- **แนะนำผู้สมัคร**: โปรแกรมจะสแกนไฟล์ resume ทั้งหมดใน folder `data` และจัดอันดับผู้สมัครที่เหมาะสมที่สุด
+### 📊 HR Summary
+- สรุปข้อมูลสำคัญในรูปแบบที่อ่านง่าย
+- แสดงข้อมูลที่ HR ต้องการเห็นทันที
+- รองรับการตัดสินใจอย่างรวดเร็ว
 
-### 🤖 สรุปสำหรับ HR
-- สรุปข้อมูลผู้สมัครแบบกระชับ เหมาะสำหรับ HR
-- แสดงข้อมูลสำคัญ: อายุ, เพศ, การศึกษา, ประสบการณ์, ทักษะหลัก, เงินเดือนที่ต้องการ
+## 🛠️ เทคโนโลยีที่ใช้
 
-## 🚀 Installation
+### Backend Framework
+- **FastAPI**: Web framework ที่รวดเร็วและทันสมัย
+- **Python 3.8+**: ภาษาหลัก
 
-### Requirements
-```bash
-Python 3.8+
-Tesseract OCR
-Poppler (สำหรับ pdf2image)
-```
+### NLP & Text Processing
+- **pythainlp**: ประมวลผลภาษาไทย (word tokenization, normalization)
+- **scikit-learn**: TF-IDF Vectorization, Cosine Similarity
+- **numpy**: การคำนวณเมทริกซ์
 
-### 1. ติดตั้ง Tesseract OCR
+### Document Processing
+- **PyPDF2**: อ่านไฟล์ PDF ที่เป็นข้อความ
+- **python-docx**: อ่านไฟล์ Word (DOCX)
+- **pytesseract**: OCR สำหรับ PDF ที่เป็นรูปภาพ
+- **pdf2image**: แปลง PDF เป็นรูปภาพ
+- **opencv-python**: ประมวลผลภาพเพื่อเพิ่มความแม่นยำ OCR
+- **Pillow**: จัดการรูปภาพ
 
-**Windows:**
-```bash
-# ดาวน์โหลดและติดตั้งจาก
-https://github.com/UB-Mannheim/tesseract/wiki
+### Web Scraping
+- **requests**: HTTP client
+- **beautifulsoup4**: HTML parsing
+- **csv**: อ่าน/เขียนไฟล์ CSV
 
-# เพิ่ม path ใน environment variables
-C:\Program Files\Tesseract-OCR
-```
+## 📦 การติดตั้ง
 
-**macOS:**
-```bash
-brew install tesseract
-brew install tesseract-lang  # สำหรับภาษาไทย
-```
-
-**Linux (Ubuntu/Debian):**
-```bash
-sudo apt-get update
-sudo apt-get install tesseract-ocr
-sudo apt-get install tesseract-ocr-tha  # สำหรับภาษาไทย
-sudo apt-get install poppler-utils
-```
-
-### 2. ติดตั้ง Poppler
-
-**Windows:**
-```bash
-# ดาวน์โหลดจาก
-https://github.com/oschwartz10612/poppler-windows/releases
-
-# แตกไฟล์และเพิ่ม bin folder ใน PATH
-C:\path\to\poppler\Library\bin
-```
-
-**macOS:**
-```bash
-brew install poppler
-```
-
-**Linux:**
-```bash
-sudo apt-get install poppler-utils
-```
-
-### 3. Clone Repository
+### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd smart-resume-analyzer
+cd smart-job-analyzer
 ```
 
-### 4. สร้าง Virtual Environment
+### 2. สร้าง Virtual Environment
 ```bash
 python -m venv venv
 
 # Windows
 venv\Scripts\activate
 
-# macOS/Linux
+# Linux/Mac
 source venv/bin/activate
 ```
 
-### 5. ติดตั้ง Dependencies
+### 3. ติดตั้ง Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6. สร้าง Folder สำหรับเก็บ Resume
+### 4. ติดตั้ง Tesseract OCR
+
+#### Windows
+1. ดาวน์โหลด [Tesseract Installer](https://github.com/UB-Mannheim/tesseract/wiki)
+2. ติดตั้งและเพิ่ม path ไปยัง `C:\Program Files\Tesseract-OCR`
+3. ดาวน์โหลด [Thai Language Data](https://github.com/tesseract-ocr/tessdata/raw/main/tha.traineddata)
+4. วางไฟล์ `tha.traineddata` ใน `C:\Program Files\Tesseract-OCR\tessdata`
+
+#### Linux (Ubuntu/Debian)
 ```bash
-mkdir data
+sudo apt-get update
+sudo apt-get install tesseract-ocr tesseract-ocr-tha
+sudo apt-get install poppler-utils  # สำหรับ pdf2image
 ```
 
-## 📦 Dependencies
-
-```txt
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-python-multipart==0.0.6
-PyPDF2==3.0.1
-python-docx==1.1.0
-pythainlp==4.0.2
-scikit-learn==1.3.2
-numpy==1.26.2
-pydantic==2.5.0
-pytesseract==0.3.10
-pdf2image==1.16.3
-opencv-python==4.8.1.78
-Pillow==10.1.0
+#### macOS
+```bash
+brew install tesseract tesseract-lang
+brew install poppler  # สำหรับ pdf2image
 ```
 
-## 🎮 Usage
+### 5. ติดตั้ง Poppler (สำหรับ pdf2image)
 
-### เริ่มต้นใช้งาน
+#### Windows
+1. ดาวน์โหลด [Poppler for Windows](http://blog.alivate.com.au/poppler-windows/)
+2. แตกไฟล์และเพิ่ม `bin/` folder ไปยัง PATH
 
+## 🚀 การใช้งาน
+
+### เริ่มต้น Server
 ```bash
-# เริ่ม server
 python main.py
-
-# หรือใช้ uvicorn โดยตรง
-uvicorn main:app --host 0.0.0.0 --port 8002 --reload
 ```
 
-Server จะรันที่: `http://localhost:8002`
+Server จะทำงานที่: `http://localhost:8002`
 
-### API Endpoints
+### API Documentation
+- **Swagger UI**: http://localhost:8002/docs
+- **ReDoc**: http://localhost:8002/redoc
 
-#### 1. **อัพโหลดและวิเคราะห์ Resume**
-```http
-POST /api/analyze-resume
-Content-Type: multipart/form-data
-```
+## 📡 API Endpoints
 
-**Request:**
+### 1. Analyze Resume
+**Endpoint**: `POST /api/analyze-resume`
+
+**Description**: อัปโหลดและวิเคราะห์ไฟล์ Resume
+
+**Request**:
 ```bash
 curl -X POST "http://localhost:8002/api/analyze-resume" \
+  -H "Content-Type: multipart/form-data" \
   -F "file=@resume.pdf"
 ```
 
-**Response:**
+**Response Example**:
 ```json
 {
+  "hr_summary": "👤 ชาย, อายุ 28 ปี\n🎯 ตำแหน่งที่ต้องการ: Software Engineer\n🎓 ปริญญาตรี วิทยาการคอมพิวเตอร์ (GPA 3.45)\n💼 ประสบการณ์: 3 ปี 6 เดือน\n💡 ทักษะ: python, javascript, react, sql\n💰 เงินเดือน: 35,000-45,000 บาท\n📍 สถานที่: กรุงเทพ",
   "contact_info": {
     "email": "example@email.com",
     "phone": "0812345678",
-    "name": "ชื่อ นามสกุล"
+    "name": "สมชาย ใจดี"
   },
   "personal_info": {
-    "age": 25,
+    "age": 28,
     "gender": "ชาย"
   },
   "education": [
     {
       "degree": "ปริญญาตรี",
       "field": "วิทยาการคอมพิวเตอร์",
-      "gpa": 3.5
-    }
-  ],
-  "work_experience": [
-    {
-      "position": "Software Developer",
-      "start_date": "มกราคม 2020",
-      "end_date": "ปัจจุบัน",
-      "duration": "3 ปี 10 เดือน"
+      "gpa": 3.45
     }
   ],
   "skills": {
-    "programming": ["python", "javascript"],
-    "web": ["react", "node.js"],
-    "design": ["figma", "ux/ui design"]
+    "programming": ["python", "java", "javascript"],
+    "web": ["react", "node.js", "html", "css"],
+    "database": ["mysql", "postgresql"]
   },
-  "salary_expectation": "40000",
-  "desired_position": "Full-stack Developer",
-  "expected_salary_details": {
-    "min_salary": 35000,
-    "max_salary": 45000,
-    "salary_range": "35,000 - 45,000 บาท",
-    "type": "monthly"
-  },
-  "preferred_location": {
-    "provinces": ["กรุงเทพมหานคร"],
-    "preferences": ["Remote/Work from home"]
-  },
-  "preferred_job_type": ["งานประจำ (Full-time)"],
-  "available_start_date": {
-    "availability": "ทันที",
-    "date": "20/10/2025"
-  },
-  "language_skills": [
-    {
-      "language": "อังกฤษ",
-      "speaking": "ดี",
-      "reading": "ดีมาก",
-      "writing": "ดี",
-      "test_score": {
-        "test": "TOEIC",
-        "score": "750"
-      }
-    }
-  ],
-  "hr_summary": "👤 ชาย, อายุ 25 ปี\n🎯 ตำแหน่งที่ต้องการ: Full-stack Developer\n🎓 ปริญญาตรี วิทยาการคอมพิวเตอร์ (GPA 3.5)\n💼 ประสบการณ์: 3 ปี 10 เดือน\n💡 ทักษะ: python, javascript, react, node.js\n💰 เงินเดือน: 35,000-45,000 บาท\n📍 สถานที่: กรุงเทพมหานคร\n⏰ ประเภท: งานประจำ (Full-time)"
+  "work_experience": [...],
+  "language_skills": [...],
+  "certifications": [...]
 }
 ```
 
-#### 2. **จับคู่งาน (Job Matching)**
-```http
-POST /api/match-job
-Content-Type: application/json
-```
+### 2. Match Job with JobThai Scraping
+**Endpoint**: `POST /api/match-job`
 
-**Request:**
+**Description**: ค้นหาและจับคู่ Resume จาก JobThai กับ Job Description
+
+**Request Body**:
 ```json
 {
+  "cookies": {
+    "phpsessid": "your_session_id",
+    "guest_id": "your_guest_id",
+    "fcnec": "your_fcnec"
+  },
   "analysis": {
-    // ผลการวิเคราะห์ resume จาก endpoint แรก
+    "skills": {
+      "programming": ["python", "java"],
+      "web": ["react", "node.js"]
+    }
   },
-  "job_description": "We are looking for a Full-stack Developer with experience in React, Node.js, and Python..."
+  "job_description": "รับสมัคร Software Engineer มีประสบการณ์ 3-5 ปี ใช้ Python, React, Node.js เงินเดือน 40,000-60,000 บาท ทำงานที่กรุงเทพ"
 }
 ```
 
-**Response:**
+**Response Example**:
 ```json
 {
-  "input_resume_match": {
-    "total_score": 85.5,
-    "vector_similarity": 78.2,
-    "basic_match_score": 82.0,
-    "skill_match_rate": 75.0,
-    "experience_score": 15,
-    "education_score": 20,
-    "language_score": 25.5,
-    "matching_skills": ["python", "javascript", "react", "node.js"],
-    "missing_skills": ["docker", "kubernetes"],
-    "recommendation": "✅ แนะนำเรียกสัมภาษณ์ทันที - ผู้สมัครมีคุณสมบัติตรงตามความต้องการสูงมาก"
+  "status": "success",
+  "statistics": {
+    "total_resumes_scanned": 500,
+    "average_score": 62.5,
+    "high_quality_matches": 45,
+    "top_matches_count": 20
   },
-  "matched_resumes": [
+  "top_matches": [
     {
-      "filename": "candidate1.pdf",
-      "match_score": {
-        "total_score": 88.0,
-        // ... คะแนนรายละเอียด
+      "total_score": 87.5,
+      "breakdown": {
+        "skills": 35.2,
+        "position": 22.8,
+        "salary": 18.5,
+        "education": 13.0,
+        "location": 10.0,
+        "experience": 8.0
       },
-      "analysis": {
-        // ... ข้อมูล resume
+      "details": {
+        "skills": {
+          "matched_skills": ["python", "javascript", "react", "node.js", "sql"],
+          "total_matched": 8
+        },
+        "matched_positions": ["software engineer", "developer"],
+        "salary": {
+          "status": "excellent_match",
+          "expected": 45000,
+          "resume_range": "40000-50000"
+        }
+      },
+      "recommendation": "🌟 แนะนำเรียกสัมภาษณ์ทันที - ผู้สมัครมีคุณสมบัติตรงตามความต้องการสูงมาก",
+      "resume_data": {
+        "id": "1234567",
+        "age": "28",
+        "position": "Software Engineer",
+        "province": "กรุงเทพมหานคร",
+        "salary": "40,000 - 50,000",
+        "education": "ปริญญาตรี",
+        "field": "วิทยาการคอมพิวเตอร์",
+        "profile_url": "https://www3.jobthai.com/resume/..."
       }
     }
-  ],
-  "total_matched": 5,
-  "scanned_files": ["candidate1.pdf", "candidate2.pdf"],
-  "total_scanned": 10
+  ]
 }
 ```
 
-#### 3. **อัพโหลด Resume หลายไฟล์**
-```http
-POST /api/upload-resumes
-Content-Type: multipart/form-data
-```
+### 3. Upload Multiple Resumes
+**Endpoint**: `POST /api/upload-resumes`
 
-**Request:**
-```bash
-curl -X POST "http://localhost:8002/api/upload-resumes" \
-  -F "files=@resume1.pdf" \
-  -F "files=@resume2.docx" \
-  -F "files=@resume3.pdf"
-```
+**Description**: อัปโหลดไฟล์ Resume หลายไฟล์พร้อมกัน
 
-**Response:**
-```json
-{
-  "uploaded": ["resume1.pdf", "resume2.docx", "resume3.pdf"],
-  "errors": [],
-  "total_uploaded": 3
-}
-```
+### 4. List Uploaded Resumes
+**Endpoint**: `GET /api/list-resumes`
 
-#### 4. **แสดงรายการ Resume ทั้งหมด**
-```http
-GET /api/list-resumes
-```
+**Description**: แสดงรายการไฟล์ Resume ที่อัปโหลดไว้
 
-**Response:**
-```json
-{
-  "resumes": [
-    {
-      "filename": "resume1.pdf",
-      "size": 524288,
-      "extension": ".pdf"
-    },
-    {
-      "filename": "resume2.docx",
-      "size": 245760,
-      "extension": ".docx"
-    }
-  ],
-  "total": 2
-}
-```
+## 📋 การวิเคราะห์และคะแนน
 
-#### 5. **Health Check**
-```http
-GET /health
-```
+### Resume Analysis Features
+- ✅ **OCR Support**: อ่าน PDF ที่เป็นรูปภาพได้ (รองรับภาษาไทย)
+- ✅ **Thai Text Normalization**: ปรับปรุงข้อความภาษาไทยให้เป็นมาตรฐาน
+- ✅ **Comprehensive Extraction**: ดึงข้อมูลครบทุกส่วนที่สำคัญ
+- ✅ **Smart Detection**: ตรวจจับข้อมูลอัตโนมัติด้วย Pattern Matching + NLP
+- ✅ **URL Cleaning**: ทำความสะอาด URL และลบข้อความภาษาไทยที่ติดมา
 
-**Response:**
-```json
-{
-  "status": "healthy",
-  "version": "2.0.0"
-}
-```
+### Job Matching Algorithm
+**คะแนนรวม 100 คะแนน แบ่งเป็น:**
 
-## 📊 คะแนนการจับคู่งาน
+1. **Skills Matching (40 คะแนน)**
+   - ใช้ TF-IDF + Cosine Similarity
+   - วิเคราะห์ความคล้ายคลึงของทักษะ
+   - โบนัสสำหรับทักษะหลากหลายหมวดหมู่
 
-### การคำนวณคะแนน
-1. **Vector Similarity (50%)**: ความคล้ายคลึงของทักษะโดยรวม
-2. **Basic Match (30%)**: ทักษะที่ตรงกันโดยตรง
-3. **Language Score (20%)**: ทักษะทางภาษา
+2. **Position Similarity (25 คะแนน)**
+   - เปรียบเทียบตำแหน่งที่ต้องการกับประสบการณ์
+   - ใช้ Semantic Similarity
 
-### โบนัสคะแนน
-- **Experience Bonus**: สูงสุด 8 คะแนน (5+ ปี)
-- **Education Bonus**: สูงสุด 8 คะแนน (ปริญญาเอก)
-- **Language Match Bonus**: สูงสุด 10 คะแนน
+3. **Salary Matching (20 คะแนน)**
+   - Perfect match: 20 คะแนน
+   - Excellent (ต่างไม่เกิน 10%): 18 คะแนน
+   - Good (ต่างไม่เกิน 20%): 15 คะแนน
+   - Acceptable (ต่างไม่เกิน 30%): 12 คะแนน
 
-### เกณฑ์การแนะนำ
-- **85-100**: ✅ แนะนำเรียกสัมภาษณ์ทันที
-- **70-84**: ✅ แนะนำเรียกสัมภาษณ์ / ⚠️ พิจารณาเรียกสัมภาษณ์
-- **55-69**: 🔶 พิจารณาได้ / ⚠️ พิจารณาอย่างรอบคอบ
-- **0-54**: ⚠️ พิจารณาอย่างรอบคอบ / ❌ ไม่แนะนำ
+4. **Education (15 คะแนน)**
+   - ระดับการศึกษา
+   - สาขาที่เกี่ยวข้อง
 
-## 🛠️ Configuration
+5. **Location (10 คะแนน)**
+   - จังหวัดตรงกัน: 10 คะแนน
+   - ไม่ระบุในงาน: 5 คะแนน
+   - ไม่ตรงกัน: 2 คะแนน
 
-### Tesseract OCR Path (Windows)
-ถ้า Tesseract ไม่อยู่ใน PATH ให้เพิ่มใน `resume_analyzer.py`:
+6. **Experience (10 คะแนน)**
+   - มีประสบการณ์ตามที่ต้องการ
 
+### คำแนะนำการรับสมัคร
+- **85+ คะแนน**: 🌟 แนะนำเรียกสัมภาษณ์ทันที
+- **75-84 คะแนน**: ✅ แนะนำเรียกสัมภาษณ์
+- **65-74 คะแนน**: ⚠️ พิจารณาเรียกสัมภาษณ์
+- **50-64 คะแนน**: 🔶 พิจารณาได้
+- **ต่ำกว่า 50**: ❌ ไม่แนะนำ
+
+## 🔧 การตั้งค่า JobThai Scraping
+
+### วิธีการหา Cookies
+1. เปิด Browser และเข้า [JobThai.com](https://www.jobthai.com)
+2. Login เข้าสู่ระบบ
+3. เปิด Developer Tools (F12)
+4. ไปที่แท็บ **Application** → **Cookies** → `https://www.jobthai.com`
+5. คัดลอกค่า:
+   - `PHPSESSID`
+   - `guestID`
+   - `FCNEC`
+
+### ตัวอย่างการใช้งาน
 ```python
-import pytesseract
-
-# Windows
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+cookies = {
+    "phpsessid": "abc123...",
+    "guest_id": "xyz789...",
+    "fcnec": "def456..."
+}
 ```
 
-### File Size Limit
-แก้ไขใน `analyze_resume.py`:
-
-```python
-max_size = 10 * 1024 * 1024  # 10MB (default)
-```
-
-### Data Directory
-ไฟล์ resume ทั้งหมดจะถูกเก็บใน folder `data/` ที่ root ของโปรเจค
-
-## 🧪 Testing
-
-### ทดสอบด้วย cURL
-
-```bash
-# 1. วิเคราะห์ resume
-curl -X POST "http://localhost:8002/api/analyze-resume" \
-  -F "file=@sample_resume.pdf"
-
-# 2. อัพโหลด resume หลายไฟล์
-curl -X POST "http://localhost:8002/api/upload-resumes" \
-  -F "files=@resume1.pdf" \
-  -F "files=@resume2.pdf"
-
-# 3. ดูรายการ resume
-curl "http://localhost:8002/api/list-resumes"
-
-# 4. จับคู่งาน (ต้องมี analysis และ job_description)
-curl -X POST "http://localhost:8002/api/match-job" \
-  -H "Content-Type: application/json" \
-  -d @match_request.json
-```
-
-### ทดสอบด้วย Python
-
-```python
-import requests
-
-# วิเคราะห์ resume
-with open('resume.pdf', 'rb') as f:
-    response = requests.post(
-        'http://localhost:8002/api/analyze-resume',
-        files={'file': f}
-    )
-    analysis = response.json()
-    print(analysis['hr_summary'])
-
-# จับคู่งาน
-job_desc = "Looking for Python developer with React experience..."
-match_response = requests.post(
-    'http://localhost:8002/api/match-job',
-    json={
-        'analysis': analysis,
-        'job_description': job_desc
-    }
-)
-match_result = match_response.json()
-print(f"Score: {match_result['input_resume_match']['total_score']}")
-print(f"Top Candidates: {len(match_result['matched_resumes'])}")
-```
-
-## 📁 Project Structure
+## 📁 โครงสร้างโปรเจค
 
 ```
-smart-resume-analyzer/
-│
-├── main.py                 # FastAPI app หลัก
-├── routers/
-│   ├── analyze_resume.py   # Router สำหรับวิเคราะห์ resume
-│   └── match_job.py        # Router สำหรับจับคู่งาน
+smart-job-analyzer/
 ├── controllers/
-│   └── resume_analyzer.py  # Core logic สำหรับวิเคราะห์
-├── data/                   # Folder เก็บ resume files
-├── requirements.txt        # Python dependencies
-└── README.md              # เอกสารนี้
+│   ├── resume_analyzer.py      # ระบบวิเคราะห์ Resume (OCR, NLP)
+│   └── jobthai_scraper.py      # Scraper สำหรับ JobThai
+├── routers/
+│   ├── analyze_resume.py       # API endpoint สำหรับวิเคราะห์
+│   └── match_job.py            # API endpoint สำหรับจับคู่งาน
+├── data/                        # เก็บไฟล์ที่อัปโหลด
+├── main.py                      # FastAPI application
+├── requirements.txt             # Python dependencies
+└── README.md                    # เอกสารนี้
 ```
 
-## 🎯 Supported Skills Categories
+## 🐛 การแก้ไขปัญหา
 
-### Technical Skills
-- **Programming**: Python, Java, JavaScript, C++, C#, PHP, Ruby, Go, SQL, etc.
-- **Web**: HTML, CSS, React, Vue, Angular, Node.js, Django, Flask, etc.
-- **Design**: UX, UI, Figma, Adobe XD, Sketch, Wireframing, Prototyping, etc.
-- **Mobile**: Android, iOS, React Native, Flutter, Xamarin, etc.
-- **Database**: SQL, MySQL, PostgreSQL, MongoDB, Oracle, Redis, etc.
-- **Cloud/DevOps**: AWS, Azure, GCP, Docker, Kubernetes, Jenkins, etc.
-- **Data Science**: Machine Learning, AI, Pandas, NumPy, TensorFlow, PyTorch, etc.
-
-### Business Skills
-- **Management**: Project Management, Team Management, Strategic Planning, etc.
-- **Leadership**: Leadership, Team Building, Mentoring, Coaching, etc.
-- **Finance**: Financial Analysis, Budgeting, Forecasting, ROI Analysis, etc.
-- **Marketing/Sales**: Digital Marketing, SEO, SEM, CRM, Sales Strategy, etc.
-
-### Thai Skills
-- รองรับคำไทยกว่า 100 คำ เช่น: การจัดการ, การบริหาร, การตลาด, การเงิน, ฯลฯ
-
-## 🐛 Troubleshooting
-
-### Tesseract not found
+### ปัญหา OCR ไม่สามารถอ่านภาษาไทยได้
 ```bash
-# ตรวจสอบว่า Tesseract ติดตั้งแล้ว
-tesseract --version
+# ตรวจสอบว่าติดตั้ง Thai language data
+tesseract --list-langs
 
-# ถ้าไม่พบ ให้ติดตั้งใหม่และเพิ่ม PATH
+# ควรเห็น 'tha' ในรายการ
+# ถ้าไม่มี ให้ดาวน์โหลดและวางไว้ใน tessdata folder
 ```
 
-### PDF OCR ไม่ทำงาน
+### ปัญหา pdf2image ไม่ทำงาน
 ```bash
-# ตรวจสอบว่า Poppler ติดตั้งแล้ว
-pdftoppm -h
+# Windows: ตรวจสอบว่า Poppler อยู่ใน PATH
+where pdftoppm
 
-# ถ้าไม่พบ ให้ติดตั้ง Poppler
+# Linux/Mac: ติดตั้ง poppler-utils
+sudo apt-get install poppler-utils  # Ubuntu/Debian
+brew install poppler                 # macOS
 ```
 
-### Thai text ไม่ถูกต้อง
-```bash
-# ติดตั้ง Thai language data สำหรับ Tesseract
-# Linux
-sudo apt-get install tesseract-ocr-tha
+### ปัญหา Memory เมื่อประมวลผล PDF ขนาดใหญ่
+- ลดค่า DPI ใน `pdf2image.convert_from_path()` จาก 300 เป็น 200
+- ประมวลผลทีละหน้า
 
-# Windows - ดาวน์โหลด tha.traineddata จาก
-# https://github.com/tesseract-ocr/tessdata
-# และใส่ใน tessdata folder
-```
+## 🔐 ความปลอดภัย
 
-### Import Error
-```bash
-# ติดตั้ง dependencies ใหม่
-pip install -r requirements.txt --upgrade
-```
+- ไฟล์ที่อัปโหลดจะถูกเก็บชั่วคราวและลบทิ้งหลังวิเคราะห์เสร็จ
+- จำกัดขนาดไฟล์สูงสุด 10MB
+- Validate file type ก่อนประมวลผล
+- ไม่เก็บข้อมูล Cookies ในระบบ
 
-## 🔒 Security Considerations
+## 📊 Performance
 
-- **File Validation**: ตรวจสอบนามสกุลไฟล์และขนาดไฟล์
-- **Temporary Files**: ลบไฟล์ชั่วคราวหลังการประมวลผล
-- **Error Handling**: ไม่แสดงข้อมูล sensitive ใน error messages
-- **CORS**: กำหนด allowed origins ตามความเหมาะสม
+- รองรับไฟล์ PDF ขนาดใหญ่ (สูงสุด 10MB)
+- ประมวลผล Resume 1 ไฟล์ใช้เวลาประมาณ 3-5 วินาที
+- OCR ใช้เวลาเพิ่มเติมประมาณ 2-3 วินาทีต่อหน้า
+- Scraping JobThai 10 หน้า ใช้เวลาประมาณ 15-20 วินาที
+- Matching 500 Resume ใช้เวลาประมาณ 10-15 วินาที
+
+## 🤝 การมีส่วนร่วม
+
+ยินดีรับ Pull Requests! สำหรับการเปลี่ยนแปลงที่สำคัญ กรุณาเปิด Issue ก่อนเพื่อหารือ
 
 ## 📝 License
 
-MIT License - feel free to use this project for personal or commercial purposes.
+MIT License
 
-## 🤝 Contributing
+## 👥 ผู้พัฒนา
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+TiwKill
 
-## 📧 Support
+## 📞 ติดต่อ
 
-For issues or questions, please open an issue on GitHub.
-
-## 🎉 Credits
-
-- **pythainlp**: Thai NLP library
-- **Tesseract OCR**: OCR engine
-- **FastAPI**: Modern web framework
-- **scikit-learn**: Machine learning library
+หากมีปัญหาหรือคำถาม กรุณาเปิด Issue ใน GitHub Repository
 
 ---
 
-**Version**: 2.0.0  
-**Last Updated**: October 2025
+**หมายเหตุ**: ระบบนี้พัฒนาขึ้นเพื่อช่วยเหลือ HR ในการคัดกรองผู้สมัครงาน ไม่ควรใช้เป็นเกณฑ์เดียวในการตัดสินใจ
