@@ -25,7 +25,6 @@ import {
     BarChart3,
     Filter,
     Search,
-    Sparkles,
 } from "lucide-react"
 import { toast } from "sonner"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -148,14 +147,14 @@ export default function MatchPage() {
 
     const getRecommendationBadge = (recommendation: string) => {
         if (recommendation.includes("✅") || recommendation.includes("แนะนำสูง"))
-            return "bg-green-100 text-green-800 border-green-300"
+            return "bg-green-100 text-green-800"
         if (recommendation.includes("🔶") || recommendation.includes("พิจารณาได้"))
-            return "bg-yellow-100 text-yellow-800 border-yellow-300"
+            return "bg-yellow-100 text-yellow-800"
         if (recommendation.includes("⚠️") || recommendation.includes("ควรพิจารณา"))
-            return "bg-orange-100 text-orange-800 border-orange-300"
+            return "bg-orange-100 text-orange-800"
         if (recommendation.includes("❌") || recommendation.includes("ไม่แนะนำ"))
-            return "bg-red-100 text-red-800 border-red-300"
-        return "bg-gray-100 text-gray-800 border-gray-300"
+            return "bg-red-100 text-red-800"
+        return "bg-gray-100 text-gray-800"
     }
 
     const getScoreColor = (score: number) => {
@@ -166,24 +165,20 @@ export default function MatchPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="min-h-screen bg-white">
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border mb-4">
-                        <Sparkles className="h-5 w-5 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-600">AI-Powered Matching System</span>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                         Resume & Job Matcher
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    <p className="text-gray-600 max-w-2xl mx-auto">
                         ระบบจับคู่เรซูเม่กับตำแหน่งงานอัจฉริยะด้วยเทคโนโลยี NLP และ Machine Learning
                     </p>
                 </div>
 
                 {/* Navigation Tabs */}
-                <div className="flex space-x-1 bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-sm border mb-8 max-w-4xl mx-auto">
+                <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 mb-8 max-w-4xl mx-auto">
                     {[
                         { id: "cookies", label: "การตั้งค่า", icon: Cookie },
                         { id: "skills", label: "ทักษะ", icon: Target },
@@ -196,7 +191,7 @@ export default function MatchPage() {
                             <Button
                                 key={tab.id}
                                 variant={activeTab === tab.id ? "default" : "ghost"}
-                                className={`flex-1 justify-center gap-2 py-3 ${activeTab === tab.id ? "shadow-sm" : ""}`}
+                                className={`flex-1 justify-center gap-2 py-2 text-sm ${activeTab === tab.id ? "shadow-sm" : ""}`}
                                 onClick={() => setActiveTab(tab.id)}
                             >
                                 <Icon className="h-4 w-4" />
@@ -206,18 +201,18 @@ export default function MatchPage() {
                     })}
                 </div>
 
-                <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <div className="grid lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                     {/* Left Column - Input Forms */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* Cookie Configuration */}
                         {activeTab === "cookies" && (
-                            <Card className="border-2 border-blue-200 shadow-lg">
-                                <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-                                    <CardTitle className="flex items-center gap-3 text-blue-900">
-                                        <Cookie className="h-6 w-6" />
+                            <Card className="border border-gray-200">
+                                <CardHeader className="border-b border-gray-200 pb-4">
+                                    <CardTitle className="flex items-center gap-2 text-gray-900">
+                                        <Cookie className="h-5 w-5" />
                                         การตั้งค่า Cookies
                                     </CardTitle>
-                                    <CardDescription className="text-blue-700">
+                                    <CardDescription>
                                         กรอกข้อมูล cookies จาก JobThai เพื่อดึงข้อมูลเรซูเม่
                                     </CardDescription>
                                 </CardHeader>
@@ -233,7 +228,6 @@ export default function MatchPage() {
                                                 placeholder={field.placeholder}
                                                 value={cookies[field.key as keyof typeof cookies]}
                                                 onChange={(e) => setCookies({ ...cookies, [field.key]: e.target.value })}
-                                                className="bg-white/50 backdrop-blur-sm"
                                             />
                                         </div>
                                     ))}
@@ -243,10 +237,10 @@ export default function MatchPage() {
 
                         {/* Skills Section */}
                         {activeTab === "skills" && (
-                            <Card className="shadow-lg">
-                                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-                                    <CardTitle className="flex items-center gap-3 text-green-900">
-                                        <Target className="h-6 w-6" />
+                            <Card className="border border-gray-200">
+                                <CardHeader className="border-b border-gray-200 pb-4">
+                                    <CardTitle className="flex items-center gap-2 text-gray-900">
+                                        <Target className="h-5 w-5" />
                                         ทักษะที่ต้องการ
                                     </CardTitle>
                                     <CardDescription>
@@ -266,7 +260,7 @@ export default function MatchPage() {
                                             </div>
                                             <Popover>
                                                 <PopoverTrigger asChild>
-                                                    <Button variant="outline" className="w-full justify-between bg-white/50 backdrop-blur-sm h-12">
+                                                    <Button variant="outline" className="w-full justify-between h-12">
                                                         <span className="truncate">
                                                             {(skills[category]?.length ?? 0) > 0 
                                                                 ? `${(skills[category] ?? []).join(", ")}`
@@ -310,10 +304,10 @@ export default function MatchPage() {
 
                         {/* Experience Section */}
                         {activeTab === "experience" && (
-                            <Card className="shadow-lg">
-                                <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b">
-                                    <CardTitle className="flex items-center gap-3 text-orange-900">
-                                        <Briefcase className="h-6 w-6" />
+                            <Card className="border border-gray-200">
+                                <CardHeader className="border-b border-gray-200 pb-4">
+                                    <CardTitle className="flex items-center gap-2 text-gray-900">
+                                        <Briefcase className="h-5 w-5" />
                                         ประสบการณ์การทำงาน
                                     </CardTitle>
                                     <CardDescription>
@@ -328,20 +322,20 @@ export default function MatchPage() {
                                                 placeholder="เช่น 2 ปี 6 เดือน, 1.5 ปี, มากกว่า 3 ปี"
                                                 value={totalExperience}
                                                 onChange={(e) => setTotalExperience(e.target.value)}
-                                                className="bg-white/50 backdrop-blur-sm h-12"
+                                                className="h-12"
                                             />
                                         </div>
-                                        <div className="flex gap-2 text-sm text-muted-foreground">
+                                        <div className="flex gap-4 text-sm text-gray-600">
                                             <div className="flex items-center gap-1">
-                                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                                <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                                                 <span>น้อยกว่า 1 ปี</span>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                                <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
                                                 <span>1-3 ปี</span>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                                <div className="w-2 h-2 bg-gray-800 rounded-full"></div>
                                                 <span>มากกว่า 3 ปี</span>
                                             </div>
                                         </div>
@@ -352,10 +346,10 @@ export default function MatchPage() {
 
                         {/* Education Section */}
                         {activeTab === "education" && (
-                            <Card className="shadow-lg">
-                                <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b">
-                                    <CardTitle className="flex items-center gap-3 text-purple-900">
-                                        <GraduationCap className="h-6 w-6" />
+                            <Card className="border border-gray-200">
+                                <CardHeader className="border-b border-gray-200 pb-4">
+                                    <CardTitle className="flex items-center gap-2 text-gray-900">
+                                        <GraduationCap className="h-5 w-5" />
                                         คุณวุฒิการศึกษา
                                     </CardTitle>
                                     <CardDescription>
@@ -364,7 +358,7 @@ export default function MatchPage() {
                                 </CardHeader>
                                 <CardContent className="p-6 space-y-4">
                                     {education.map((edu, idx) => (
-                                        <div key={idx} className="grid md:grid-cols-3 gap-3 items-end p-4 bg-white/50 rounded-lg border">
+                                        <div key={idx} className="grid md:grid-cols-3 gap-3 items-end p-4 bg-gray-50 rounded-lg border">
                                             <div className="space-y-2">
                                                 <label className="text-sm font-medium text-gray-700">ระดับการศึกษา</label>
                                                 <Input
@@ -403,7 +397,7 @@ export default function MatchPage() {
                                                     />
                                                 </div>
                                                 {education.length > 1 && (
-                                                    <Button variant="destructive" size="icon" onClick={() => removeEducation(idx)} className="mb-1">
+                                                    <Button variant="outline" size="icon" onClick={() => removeEducation(idx)} className="mb-1">
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
                                                 )}
@@ -419,10 +413,10 @@ export default function MatchPage() {
 
                         {/* Job Description */}
                         {activeTab === "job" && (
-                            <Card className="shadow-lg">
-                                <CardHeader className="bg-gradient-to-r from-indigo-50 to-blue-50 border-b">
-                                    <CardTitle className="flex items-center gap-3 text-indigo-900">
-                                        <Search className="h-6 w-6" />
+                            <Card className="border border-gray-200">
+                                <CardHeader className="border-b border-gray-200 pb-4">
+                                    <CardTitle className="flex items-center gap-2 text-gray-900">
+                                        <Search className="h-5 w-5" />
                                         รายละเอียดตำแหน่งงาน
                                     </CardTitle>
                                     <CardDescription>
@@ -436,9 +430,9 @@ export default function MatchPage() {
                                             value={jobDescription}
                                             onChange={(e) => setJobDescription(e.target.value)}
                                             rows={8}
-                                            className="bg-white/50 backdrop-blur-sm resize-none"
+                                            className="resize-none"
                                         />
-                                        <div className="flex justify-between text-sm text-muted-foreground">
+                                        <div className="flex justify-between text-sm text-gray-600">
                                             <span>คำแนะนำ: อธิบายให้ละเอียดเพื่อผลลัพธ์ที่แม่นยำยิ่งขึ้น</span>
                                             <span>{jobDescription.length} ตัวอักษร</span>
                                         </div>
@@ -447,17 +441,16 @@ export default function MatchPage() {
                                     <Button 
                                         onClick={handleMatch} 
                                         disabled={isLoading} 
-                                        className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                                        size="lg"
+                                        className="w-full font-medium disabled:opacity-50"
                                     >
                                         {isLoading ? (
                                             <>
-                                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                 กำลังวิเคราะห์และจับคู่...
                                             </>
                                         ) : (
                                             <>
-                                                <Sparkles className="mr-2 h-5 w-5" />
+                                                <Search className="mr-2 h-4 w-4" />
                                                 เริ่มจับคู่ผู้สมัครอัตโนมัติ
                                             </>
                                         )}
@@ -470,7 +463,7 @@ export default function MatchPage() {
                     {/* Right Column - Results */}
                     <div className="space-y-6">
                         {/* Quick Stats */}
-                        <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                        <Card className="border border-gray-200">
                             <CardContent className="p-6">
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
@@ -478,23 +471,23 @@ export default function MatchPage() {
                                         สถิติการจับคู่
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="text-center p-3 bg-blue-50 rounded-lg border">
-                                            <div className="text-2xl font-bold text-blue-600">{data?.statistics?.total_resumes_scanned || 0}</div>
-                                            <div className="text-xs text-blue-600">เรซูเม่ทั้งหมด</div>
+                                        <div className="text-center p-3 bg-gray-50 rounded border">
+                                            <div className="text-xl font-bold text-gray-900">{data?.statistics?.total_resumes_scanned || 0}</div>
+                                            <div className="text-xs text-gray-600">เรซูเม่ทั้งหมด</div>
                                         </div>
-                                        <div className="text-center p-3 bg-green-50 rounded-lg border">
-                                            <div className="text-2xl font-bold text-green-600">{data?.statistics?.top_matches_count || 0}</div>
-                                            <div className="text-xs text-green-600">ตรงตามเงื่อนไข</div>
+                                        <div className="text-center p-3 bg-gray-50 rounded border">
+                                            <div className="text-xl font-bold text-gray-900">{data?.statistics?.top_matches_count || 0}</div>
+                                            <div className="text-xs text-gray-600">ตรงตามเงื่อนไข</div>
                                         </div>
-                                        <div className="text-center p-3 bg-purple-50 rounded-lg border">
-                                            <div className="text-2xl font-bold text-purple-600">
+                                        <div className="text-center p-3 bg-gray-50 rounded border">
+                                            <div className="text-xl font-bold text-gray-900">
                                                 {data?.statistics?.average_score?.toFixed(1) || 0}%
                                             </div>
-                                            <div className="text-xs text-purple-600">คะแนนเฉลี่ย</div>
+                                            <div className="text-xs text-gray-600">คะแนนเฉลี่ย</div>
                                         </div>
-                                        <div className="text-center p-3 bg-orange-50 rounded-lg border">
-                                            <div className="text-2xl font-bold text-orange-600">{data?.statistics?.high_quality_matches || 0}</div>
-                                            <div className="text-xs text-orange-600">คุณภาพสูง</div>
+                                        <div className="text-center p-3 bg-gray-50 rounded border">
+                                            <div className="text-xl font-bold text-gray-900">{data?.statistics?.high_quality_matches || 0}</div>
+                                            <div className="text-xs text-gray-600">คุณภาพสูง</div>
                                         </div>
                                     </div>
                                 </div>
@@ -503,10 +496,10 @@ export default function MatchPage() {
 
                         {/* Results */}
                         {data && data.top_matches && data.top_matches.length > 0 && (
-                            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                            <Card className="border border-gray-200">
                                 <CardHeader className="pb-4">
                                     <CardTitle className="flex items-center gap-2 text-lg">
-                                        <TrendingUp className="h-5 w-5 text-green-600" />
+                                        <TrendingUp className="h-5 w-5 text-gray-600" />
                                         ผู้สมัครที่เหมาะสมที่สุด
                                         <Badge variant="secondary" className="ml-2">
                                             {data.top_matches.length} คน
@@ -517,7 +510,7 @@ export default function MatchPage() {
                                     {data.top_matches.map((match, index) => (
                                         <div
                                             key={index}
-                                            className="p-4 bg-white rounded-lg border-2 border-gray-100 hover:border-blue-200 hover:shadow-md transition-all cursor-pointer"
+                                            className="p-4 bg-gray-50 rounded-lg border hover:border-gray-300 transition-colors cursor-pointer"
                                             onClick={() => {
                                                 if (match.resume_data?.profile_url) {
                                                     window.open(match.resume_data.profile_url, "_blank")
@@ -529,13 +522,13 @@ export default function MatchPage() {
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <User className="h-4 w-4 text-gray-500" />
-                                                        <span className="font-semibold text-gray-900 line-clamp-1">
+                                                        <span className="font-medium text-gray-900 line-clamp-1">
                                                             {match.resume_data?.position || "ไม่ระบุตำแหน่ง"}
                                                         </span>
                                                         <ExternalLink className="h-3 w-3 text-gray-400" />
                                                     </div>
                                                     <div className="flex flex-wrap gap-1 mb-2">
-                                                        <Badge variant="outline" className="text-xs">
+                                                        <Badge variant="secondary" className="text-xs">
                                                             ID: {match.resume_data?.id}
                                                         </Badge>
                                                         <Badge className={getRecommendationBadge(match.recommendation)}>
@@ -544,7 +537,7 @@ export default function MatchPage() {
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className={`text-2xl font-bold ${getScoreColor(match.total_score || 0)}`}>
+                                                    <div className={`text-xl font-bold ${getScoreColor(match.total_score || 0)}`}>
                                                         {match.total_score?.toFixed(1) || 0}%
                                                     </div>
                                                     <div className="text-xs text-gray-500">คะแนนรวม</div>
@@ -582,13 +575,13 @@ export default function MatchPage() {
                                             {/* Score Breakdown */}
                                             <div className="grid grid-cols-3 gap-1 mb-3">
                                                 {[
-                                                    { label: "ทักษะ", value: match.breakdown?.skills, color: "bg-blue-500" },
-                                                    { label: "ตำแหน่ง", value: match.breakdown?.position, color: "bg-green-500" },
-                                                    { label: "เงินเดือน", value: match.breakdown?.salary, color: "bg-purple-500" },
+                                                    { label: "ทักษะ", value: match.breakdown?.skills },
+                                                    { label: "ตำแหน่ง", value: match.breakdown?.position },
+                                                    { label: "เงินเดือน", value: match.breakdown?.salary },
                                                 ].map((item, idx) => (
                                                     <div key={idx} className="text-center">
                                                         <div className="text-xs text-gray-500 mb-1">{item.label}</div>
-                                                        <div className="text-sm font-semibold">{item.value || 0}</div>
+                                                        <div className="text-sm font-semibold text-gray-900">{item.value || 0}</div>
                                                     </div>
                                                 ))}
                                             </div>
@@ -602,7 +595,7 @@ export default function MatchPage() {
                                             )}
 
                                             {/* Recommendation */}
-                                            <div className="text-xs text-gray-700 bg-gray-50 rounded px-2 py-1">
+                                            <div className="text-xs text-gray-700 bg-white rounded px-2 py-1 border">
                                                 {match.recommendation}
                                             </div>
                                         </div>
@@ -613,12 +606,12 @@ export default function MatchPage() {
 
                         {/* Empty State */}
                         {!data && (
-                            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg text-center">
-                                <CardContent className="p-8">
-                                    <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Sparkles className="h-8 w-8 text-blue-600" />
+                            <Card className="border border-gray-200 text-center">
+                                <CardContent className="p-6">
+                                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <Search className="h-6 w-6 text-gray-600" />
                                     </div>
-                                    <h3 className="font-semibold text-gray-900 mb-2">เริ่มต้นการจับคู่</h3>
+                                    <h3 className="font-medium text-gray-900 mb-2">เริ่มต้นการจับคู่</h3>
                                     <p className="text-sm text-gray-600 mb-4">
                                         กรอกข้อมูลตำแหน่งงานและเงื่อนไขที่ต้องการเพื่อค้นหาผู้สมัครที่เหมาะสม
                                     </p>

@@ -25,8 +25,7 @@ import {
     Phone,
     MapPin,
     Calendar,
-    Award,
-    Sparkles
+    Award
 } from "lucide-react"
 import { toast } from "sonner"
 import { useAnalyzeResume } from "@/hooks/use-analyze-resume"
@@ -70,34 +69,30 @@ export default function AnalyzePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
+        <div className="min-h-screen bg-white p-6">
             <div className="mx-auto max-w-6xl space-y-8">
                 {/* Header */}
                 <div className="text-center space-y-4">
-                    <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border">
-                        <Sparkles className="h-5 w-5 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-600">AI-Powered Resume Analysis</span>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                         วิเคราะห์เรซูเม่อัตโนมัติ
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    <p className="text-gray-600 max-w-2xl mx-auto">
                         ระบบวิเคราะห์และดึงข้อมูลจากเรซูเม่โดยใช้เทคโนโลยี AI
                     </p>
                 </div>
 
                 {/* Upload Section */}
-                <Card className="border-2 border-blue-200 shadow-xl">
-                    <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-                        <CardTitle className="flex items-center gap-3 text-blue-900">
-                            <Upload className="h-6 w-6" />
+                <Card className="border border-gray-200 shadow-sm">
+                    <CardHeader className="border-b border-gray-200 pb-4">
+                        <CardTitle className="flex items-center gap-2 text-gray-900">
+                            <Upload className="h-5 w-5" />
                             อัปโหลดไฟล์เรซูเม่
                         </CardTitle>
-                        <CardDescription className="text-blue-700">
+                        <CardDescription>
                             รองรับไฟล์ PDF, DOC, DOCX, หรือ TXT ขนาดไม่เกิน 10MB
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="p-8 space-y-6">
+                    <CardContent className="p-6 space-y-6">
                         <div className="relative group">
                             <input
                                 type="file"
@@ -105,11 +100,11 @@ export default function AnalyzePage() {
                                 onChange={handleFileChange}
                                 className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                             />
-                            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-300 bg-white/80 backdrop-blur-sm p-12 text-center transition-all duration-300 group-hover:border-blue-400 group-hover:bg-blue-50/50">
-                                <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <Upload className="h-8 w-8 text-blue-600" />
+                            <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white p-8 text-center transition-all duration-200 group-hover:border-gray-400 group-hover:bg-gray-50">
+                                <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                                    <Upload className="h-6 w-6 text-gray-600" />
                                 </div>
-                                <p className="text-lg font-semibold text-gray-900 mb-2">
+                                <p className="text-lg font-medium text-gray-900 mb-2">
                                     {file ? (
                                         <span className="flex items-center gap-2">
                                             {getFileIcon(file.name)} {file.name}
@@ -122,10 +117,10 @@ export default function AnalyzePage() {
                                     ลากไฟล์มาวางที่นี่หรือคลิกเพื่อเลือกไฟล์
                                 </p>
                                 <div className="flex flex-wrap gap-2 mt-4 justify-center">
-                                    <Badge variant="outline" className="bg-blue-50 text-blue-700">PDF</Badge>
-                                    <Badge variant="outline" className="bg-green-50 text-green-700">DOC</Badge>
-                                    <Badge variant="outline" className="bg-purple-50 text-purple-700">DOCX</Badge>
-                                    <Badge variant="outline" className="bg-orange-50 text-orange-700">TXT</Badge>
+                                    <Badge variant="secondary" className="bg-gray-100">PDF</Badge>
+                                    <Badge variant="secondary" className="bg-gray-100">DOC</Badge>
+                                    <Badge variant="secondary" className="bg-gray-100">DOCX</Badge>
+                                    <Badge variant="secondary" className="bg-gray-100">TXT</Badge>
                                 </div>
                             </div>
                         </div>
@@ -133,17 +128,16 @@ export default function AnalyzePage() {
                         <Button
                             onClick={handleAnalyze}
                             disabled={isLoading || !file}
-                            className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg"
-                            size="lg"
+                            className="w-full font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading ? (
                                 <>
-                                    <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     กำลังวิเคราะห์เรซูเม่...
                                 </>
                             ) : (
                                 <>
-                                    <FileSearch className="mr-3 h-5 w-5" />
+                                    <FileSearch className="mr-2 h-4 w-4" />
                                     เริ่มวิเคราะห์ด้วย AI
                                 </>
                             )}
@@ -153,20 +147,20 @@ export default function AnalyzePage() {
 
                 {/* Results */}
                 {result && (
-                    <div className="space-y-8">
+                    <div className="space-y-6">
                         {/* Summary Card */}
-                        <div className="grid md:grid-cols-3 gap-6">
+                        <div className="grid md:grid-cols-3 gap-4">
                             {/* HR Summary */}
                             {result.hr_summary && (
-                                <Card className="md:col-span-3 border-2 border-green-200 shadow-lg">
-                                    <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-                                        <CardTitle className="flex items-center gap-3 text-green-900">
-                                            <Award className="h-6 w-6" />
+                                <Card className="md:col-span-3 border border-gray-200">
+                                    <CardHeader className="border-b border-gray-200 pb-4">
+                                        <CardTitle className="flex items-center gap-2 text-gray-900">
+                                            <Award className="h-5 w-5" />
                                             สรุปผลการวิเคราะห์
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-6">
-                                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border">
+                                        <div className="bg-gray-50 rounded-lg p-4 border">
                                             <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                                                 {result.hr_summary}
                                             </p>
@@ -176,25 +170,25 @@ export default function AnalyzePage() {
                             )}
 
                             {/* Quick Stats */}
-                            <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-xl">
-                                <CardContent className="p-6">
-                                    <div className="space-y-4">
+                            <Card className="border border-gray-200">
+                                <CardContent className="p-4">
+                                    <div className="space-y-3">
                                         <div className="flex items-center gap-2">
-                                            <User className="h-5 w-5" />
-                                            <span className="font-semibold">ข้อมูลส่วนตัว</span>
+                                            <User className="h-4 w-4 text-gray-600" />
+                                            <span className="font-medium text-gray-900">ข้อมูลส่วนตัว</span>
                                         </div>
                                         {result.personal_info && (
                                             <div className="space-y-2 text-sm">
                                                 {result.personal_info.age && (
                                                     <div className="flex justify-between">
-                                                        <span>อายุ</span>
-                                                        <span className="font-semibold">{result.personal_info.age}</span>
+                                                        <span className="text-gray-600">อายุ</span>
+                                                        <span className="font-semibold text-gray-900">{result.personal_info.age}</span>
                                                     </div>
                                                 )}
                                                 {result.total_experience && (
                                                     <div className="flex justify-between">
-                                                        <span>ประสบการณ์</span>
-                                                        <span className="font-semibold">{result.total_experience}</span>
+                                                        <span className="text-gray-600">ประสบการณ์</span>
+                                                        <span className="font-semibold text-gray-900">{result.total_experience}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -204,19 +198,19 @@ export default function AnalyzePage() {
                             </Card>
 
                             {/* Skills Count */}
-                            <Card className="bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-xl">
-                                <CardContent className="p-6">
-                                    <div className="space-y-4">
+                            <Card className="border border-gray-200">
+                                <CardContent className="p-4">
+                                    <div className="space-y-3">
                                         <div className="flex items-center gap-2">
-                                            <Award className="h-5 w-5" />
-                                            <span className="font-semibold">ทักษะทั้งหมด</span>
+                                            <Award className="h-4 w-4 text-gray-600" />
+                                            <span className="font-medium text-gray-900">ทักษะทั้งหมด</span>
                                         </div>
                                         {result.skills && (
                                             <div className="text-center">
-                                                <div className="text-3xl font-bold">
+                                                <div className="text-2xl font-bold text-gray-900">
                                                     {Object.values(result.skills).flat().length}
                                                 </div>
-                                                <div className="text-sm opacity-90">ทักษะที่ตรวจพบ</div>
+                                                <div className="text-sm text-gray-600">ทักษะที่ตรวจพบ</div>
                                             </div>
                                         )}
                                     </div>
@@ -224,19 +218,19 @@ export default function AnalyzePage() {
                             </Card>
 
                             {/* Education Level */}
-                            <Card className="bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-xl">
-                                <CardContent className="p-6">
-                                    <div className="space-y-4">
+                            <Card className="border border-gray-200">
+                                <CardContent className="p-4">
+                                    <div className="space-y-3">
                                         <div className="flex items-center gap-2">
-                                            <GraduationCap className="h-5 w-5" />
-                                            <span className="font-semibold">ระดับการศึกษา</span>
+                                            <GraduationCap className="h-4 w-4 text-gray-600" />
+                                            <span className="font-medium text-gray-900">ระดับการศึกษา</span>
                                         </div>
                                         {result.education?.[0] && (
                                             <div className="text-center">
-                                                <div className="text-lg font-bold truncate">
+                                                <div className="text-sm font-semibold text-gray-900 truncate">
                                                     {result.education[0].degree}
                                                 </div>
-                                                <div className="text-sm opacity-90 truncate">
+                                                <div className="text-xs text-gray-600 truncate">
                                                     {result.education[0].field}
                                                 </div>
                                             </div>
@@ -247,29 +241,29 @@ export default function AnalyzePage() {
                         </div>
 
                         {/* Main Content Grid */}
-                        <div className="grid lg:grid-cols-2 gap-8">
+                        <div className="grid lg:grid-cols-2 gap-6">
                             {/* Left Column */}
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                                 {/* Contact Information */}
                                 {result.contact_info && (
-                                    <Card className="shadow-lg border-2 border-blue-100">
-                                        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-                                            <CardTitle className="flex items-center gap-3 text-blue-900">
+                                    <Card className="border border-gray-200">
+                                        <CardHeader className="border-b border-gray-200 pb-4">
+                                            <CardTitle className="flex items-center gap-2 text-gray-900">
                                                 <Mail className="h-5 w-5" />
                                                 ข้อมูลการติดต่อ
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent className="p-6 space-y-4">
+                                        <CardContent className="p-4 space-y-3">
                                             {Object.entries(result.contact_info).map(([key, value]) => (
-                                                <div key={key} className="flex items-center gap-3 p-3 bg-white/50 rounded-lg border">
-                                                    {key === 'email' && <Mail className="h-4 w-4 text-blue-600" />}
-                                                    {key === 'phone' && <Phone className="h-4 w-4 text-green-600" />}
-                                                    {key === 'address' && <MapPin className="h-4 w-4 text-red-600" />}
+                                                <div key={key} className="flex items-center gap-3 p-2 bg-gray-50 rounded border">
+                                                    {key === 'email' && <Mail className="h-4 w-4 text-gray-600" />}
+                                                    {key === 'phone' && <Phone className="h-4 w-4 text-gray-600" />}
+                                                    {key === 'address' && <MapPin className="h-4 w-4 text-gray-600" />}
                                                     <div className="flex-1">
                                                         <p className="text-xs text-gray-500 capitalize">
                                                             {key.replace(/_/g, " ")}
                                                         </p>
-                                                        <p className="font-medium text-gray-900">{String(value)}</p>
+                                                        <p className="font-medium text-gray-900 text-sm">{String(value)}</p>
                                                     </div>
                                                 </div>
                                             ))}
@@ -279,31 +273,31 @@ export default function AnalyzePage() {
 
                                 {/* Education */}
                                 {result.education?.length > 0 && (
-                                    <Card className="shadow-lg border-2 border-green-100">
-                                        <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-                                            <CardTitle className="flex items-center gap-3 text-green-900">
+                                    <Card className="border border-gray-200">
+                                        <CardHeader className="border-b border-gray-200 pb-4">
+                                            <CardTitle className="flex items-center gap-2 text-gray-900">
                                                 <GraduationCap className="h-5 w-5" />
                                                 ประวัติการศึกษา
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent className="p-6 space-y-4">
+                                        <CardContent className="p-4 space-y-3">
                                             {result.education.map((edu: any, i: number) => (
-                                                <div key={i} className="p-4 bg-white/50 rounded-xl border border-green-100">
+                                                <div key={i} className="p-3 bg-gray-50 rounded-lg border">
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div>
-                                                            <p className="font-semibold text-gray-900">{edu.degree}</p>
-                                                            <p className="text-sm text-gray-600">{edu.field}</p>
+                                                            <p className="font-medium text-gray-900 text-sm">{edu.degree}</p>
+                                                            <p className="text-xs text-gray-600">{edu.field}</p>
                                                         </div>
                                                         {edu.gpa && (
-                                                            <Badge className="bg-green-100 text-green-800 border-green-300">
+                                                            <Badge className="bg-gray-100 text-gray-800">
                                                                 GPA: {edu.gpa}
                                                             </Badge>
                                                         )}
                                                     </div>
                                                     {edu.honor && (
-                                                        <div className="flex items-center gap-2 mt-2">
-                                                            <Award className="h-4 w-4 text-yellow-600" />
-                                                            <span className="text-sm text-yellow-700">{edu.honor}</span>
+                                                        <div className="flex items-center gap-2 mt-1">
+                                                            <Award className="h-3 w-3 text-gray-600" />
+                                                            <span className="text-xs text-gray-700">{edu.honor}</span>
                                                         </div>
                                                     )}
                                                 </div>
@@ -314,34 +308,34 @@ export default function AnalyzePage() {
 
                                 {/* Language Skills */}
                                 {result.language_skills?.length > 0 && (
-                                    <Card className="shadow-lg border-2 border-purple-100">
-                                        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b">
-                                            <CardTitle className="flex items-center gap-3 text-purple-900">
+                                    <Card className="border border-gray-200">
+                                        <CardHeader className="border-b border-gray-200 pb-4">
+                                            <CardTitle className="flex items-center gap-2 text-gray-900">
                                                 <Languages className="h-5 w-5" />
                                                 ทักษะภาษา
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent className="p-6 space-y-4">
+                                        <CardContent className="p-4 space-y-3">
                                             {result.language_skills.map((lang: any, i: number) => (
-                                                <div key={i} className="p-3 bg-white/50 rounded-lg border">
-                                                    <p className="font-semibold text-gray-900 mb-2">{lang.language}</p>
+                                                <div key={i} className="p-3 bg-gray-50 rounded border">
+                                                    <p className="font-medium text-gray-900 text-sm mb-2">{lang.language}</p>
                                                     <div className="grid grid-cols-3 gap-2 text-xs">
                                                         {lang.speaking && (
-                                                            <div className="text-center p-2 bg-blue-50 rounded">
-                                                                <div className="font-medium text-blue-700">พูด</div>
-                                                                <div className="text-blue-900">{lang.speaking}</div>
+                                                            <div className="text-center p-2 bg-white rounded border">
+                                                                <div className="font-medium text-gray-700">พูด</div>
+                                                                <div className="text-gray-900">{lang.speaking}</div>
                                                             </div>
                                                         )}
                                                         {lang.reading && (
-                                                            <div className="text-center p-2 bg-green-50 rounded">
-                                                                <div className="font-medium text-green-700">อ่าน</div>
-                                                                <div className="text-green-900">{lang.reading}</div>
+                                                            <div className="text-center p-2 bg-white rounded border">
+                                                                <div className="font-medium text-gray-700">อ่าน</div>
+                                                                <div className="text-gray-900">{lang.reading}</div>
                                                             </div>
                                                         )}
                                                         {lang.writing && (
-                                                            <div className="text-center p-2 bg-purple-50 rounded">
-                                                                <div className="font-medium text-purple-700">เขียน</div>
-                                                                <div className="text-purple-900">{lang.writing}</div>
+                                                            <div className="text-center p-2 bg-white rounded border">
+                                                                <div className="font-medium text-gray-700">เขียน</div>
+                                                                <div className="text-gray-900">{lang.writing}</div>
                                                             </div>
                                                         )}
                                                     </div>
@@ -353,34 +347,34 @@ export default function AnalyzePage() {
                             </div>
 
                             {/* Right Column */}
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                                 {/* Work Experience */}
                                 {result.work_experience?.length > 0 && (
-                                    <Card className="shadow-lg border-2 border-orange-100">
-                                        <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b">
-                                            <CardTitle className="flex items-center gap-3 text-orange-900">
+                                    <Card className="border border-gray-200">
+                                        <CardHeader className="border-b border-gray-200 pb-4">
+                                            <CardTitle className="flex items-center gap-2 text-gray-900">
                                                 <Briefcase className="h-5 w-5" />
                                                 ประสบการณ์การทำงาน
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent className="p-6 space-y-4">
+                                        <CardContent className="p-4 space-y-3">
                                             {result.work_experience.map((exp: any, i: number) => (
-                                                <div key={i} className="p-4 bg-white/50 rounded-xl border-l-4 border-orange-400">
+                                                <div key={i} className="p-3 bg-gray-50 rounded-lg border-l-2 border-gray-400">
                                                     <div className="flex justify-between items-start mb-2">
-                                                        <p className="font-semibold text-gray-900">{exp.position}</p>
-                                                        <Badge variant="outline" className="bg-orange-50 text-orange-700">
+                                                        <p className="font-medium text-gray-900 text-sm">{exp.position}</p>
+                                                        <Badge variant="secondary" className="bg-gray-100 text-gray-700">
                                                             {exp.duration}
                                                         </Badge>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                                                        <Calendar className="h-4 w-4" />
+                                                    <div className="flex items-center gap-2 text-xs text-gray-600 mb-2">
+                                                        <Calendar className="h-3 w-3" />
                                                         <span>{exp.start_date} - {exp.end_date}</span>
                                                     </div>
                                                 </div>
                                             ))}
                                             {result.total_experience && (
-                                                <div className="p-3 bg-gradient-to-r from-orange-100 to-amber-100 rounded-lg border border-orange-200">
-                                                    <p className="text-orange-800 font-semibold text-center">
+                                                <div className="p-2 bg-gray-100 rounded border border-gray-300">
+                                                    <p className="text-gray-800 font-medium text-center text-sm">
                                                         💼 ประสบการณ์รวม: {result.total_experience}
                                                     </p>
                                                 </div>
@@ -391,26 +385,26 @@ export default function AnalyzePage() {
 
                                 {/* Skills */}
                                 {result.skills && (
-                                    <Card className="shadow-lg border-2 border-indigo-100">
-                                        <CardHeader className="bg-gradient-to-r from-indigo-50 to-blue-50 border-b">
-                                            <CardTitle className="flex items-center gap-3 text-indigo-900">
+                                    <Card className="border border-gray-200">
+                                        <CardHeader className="border-b border-gray-200 pb-4">
+                                            <CardTitle className="flex items-center gap-2 text-gray-900">
                                                 <Award className="h-5 w-5" />
                                                 ทักษะและความสามารถ
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent className="p-6 space-y-6">
+                                        <CardContent className="p-4 space-y-4">
                                             {Object.entries(result.skills).map(([category, list]) =>
                                                 list && (list as string[]).length > 0 ? ( 
                                                     <div key={category}>
-                                                        <p className="text-sm font-semibold text-gray-700 capitalize mb-3">
+                                                        <p className="text-sm font-medium text-gray-700 capitalize mb-2">
                                                             {category.replace(/_/g, " ")}
                                                         </p>
-                                                        <div className="flex flex-wrap gap-2">
+                                                        <div className="flex flex-wrap gap-1">
                                                             {(list as string[]).map((s, i) => (
                                                                 <Badge 
                                                                     key={i} 
                                                                     variant="secondary"
-                                                                    className="bg-indigo-100 text-indigo-800 border-indigo-300 hover:bg-indigo-200"
+                                                                    className="bg-gray-100 text-gray-800 hover:bg-gray-200"
                                                                 >
                                                                     {s}
                                                                 </Badge>
@@ -424,24 +418,24 @@ export default function AnalyzePage() {
                                 )}
 
                                 {/* Additional Sections */}
-                                <div className="grid gap-6">
+                                <div className="space-y-4">
                                     {/* Driving Skills */}
                                     {result.driving_skills && (
-                                        <Card className="shadow-lg border-2 border-gray-100">
-                                            <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-50 border-b">
-                                                <CardTitle className="flex items-center gap-3 text-gray-900">
+                                        <Card className="border border-gray-200">
+                                            <CardHeader className="border-b border-gray-200 pb-4">
+                                                <CardTitle className="flex items-center gap-2 text-gray-900">
                                                     <Car className="h-5 w-5" />
                                                     ทักษะการขับขี่
                                                 </CardTitle>
                                             </CardHeader>
-                                            <CardContent className="p-6">
-                                                <div className="grid md:grid-cols-2 gap-4">
+                                            <CardContent className="p-4">
+                                                <div className="grid md:grid-cols-2 gap-3">
                                                     <div className="space-y-2">
                                                         <p className="text-sm font-medium text-gray-700">สามารถขับขี่</p>
                                                         {result.driving_skills.can_drive?.length > 0 ? (
-                                                            <div className="flex flex-wrap gap-2">
+                                                            <div className="flex flex-wrap gap-1">
                                                                 {result.driving_skills.can_drive.map((d: string, i: number) => (
-                                                                    <Badge key={i} variant="outline" className="bg-blue-50">
+                                                                    <Badge key={i} variant="secondary" className="bg-gray-100">
                                                                         {d}
                                                                     </Badge>
                                                                 ))}
@@ -453,9 +447,9 @@ export default function AnalyzePage() {
                                                     <div className="space-y-2">
                                                         <p className="text-sm font-medium text-gray-700">ยานพาหนะส่วนตัว</p>
                                                         {result.driving_skills.owns_vehicle?.length > 0 ? (
-                                                            <div className="flex flex-wrap gap-2">
+                                                            <div className="flex flex-wrap gap-1">
                                                                 {result.driving_skills.owns_vehicle.map((v: string, i: number) => (
-                                                                    <Badge key={i} variant="outline" className="bg-green-50">
+                                                                    <Badge key={i} variant="secondary" className="bg-gray-100">
                                                                         {v}
                                                                     </Badge>
                                                                 ))}
@@ -471,24 +465,24 @@ export default function AnalyzePage() {
 
                                     {/* Links */}
                                     {result.links?.length > 0 && (
-                                        <Card className="shadow-lg border-2 border-cyan-100">
-                                            <CardHeader className="bg-gradient-to-r from-cyan-50 to-sky-50 border-b">
-                                                <CardTitle className="flex items-center gap-3 text-cyan-900">
+                                        <Card className="border border-gray-200">
+                                            <CardHeader className="border-b border-gray-200 pb-4">
+                                                <CardTitle className="flex items-center gap-2 text-gray-900">
                                                     <LinkIcon className="h-5 w-5" />
                                                     ลิงก์และผลงาน
                                                 </CardTitle>
                                             </CardHeader>
-                                            <CardContent className="p-6 space-y-3">
+                                            <CardContent className="p-4 space-y-2">
                                                 {result.links.map((link: string, i: number) => (
                                                     <a
                                                         key={i}
                                                         href={link}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center gap-3 p-3 bg-white/50 rounded-lg border border-cyan-200 hover:bg-cyan-50 transition-colors group"
+                                                        className="flex items-center gap-2 p-2 bg-gray-50 rounded border hover:bg-gray-100 transition-colors group"
                                                     >
-                                                        <ExternalLink className="h-4 w-4 text-cyan-600 group-hover:text-cyan-700" />
-                                                        <span className="text-cyan-700 group-hover:text-cyan-800 truncate">
+                                                        <ExternalLink className="h-4 w-4 text-gray-600 group-hover:text-gray-700" />
+                                                        <span className="text-gray-700 group-hover:text-gray-800 truncate text-sm">
                                                             {link}
                                                         </span>
                                                     </a>
